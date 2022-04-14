@@ -1,4 +1,4 @@
-package com.unken.codewars
+package com.unken.codewars.common.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
