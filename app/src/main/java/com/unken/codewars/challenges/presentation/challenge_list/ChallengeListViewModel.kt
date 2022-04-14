@@ -41,13 +41,13 @@ class ChallengeListViewModel @Inject constructor(private val getCodeWarInfo: Get
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            challengesInfo = result.data
+                            userChallengesInfo = result.data
                         )
                     }
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            challengesInfo = result.data
+                            userChallengesInfo = result.data
                         )
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(
