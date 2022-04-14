@@ -1,6 +1,9 @@
 package com.unken.codewars.challenges.di
 
 import com.unken.codewars.challenges.data.remote.CodeWarApi
+import com.unken.codewars.challenges.data.repository.CodeWarRepositoryImpl
+import com.unken.codewars.challenges.domain.repository.CodeWarRepository
+import com.unken.codewars.challenges.domain.usecases.GetCodeWarInfo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +24,16 @@ internal object CodeWarsModule {
 
         return builder.create(CodeWarApi::class.java)
     }
+
+    @Provides
+    fun providesCodeWarRepository(api: CodeWarApi): CodeWarRepository {
+        return CodeWarRepositoryImpl(api)
+    }
+
+    @Provides
+    fun providesGetCodeWarInfoUseCase(repository: CodeWarRepository) : GetCodeWarInfo {
+        return GetCodeWarInfo(repository)
+    }
+
+    
 }
