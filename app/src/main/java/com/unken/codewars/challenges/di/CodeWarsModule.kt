@@ -35,5 +35,5 @@ internal object CodeWarsModule {
         return GetCodeWarInfo(repository)
     }
 
-    
+
 }
