@@ -1,16 +1,16 @@
 package com.unken.codewars.challenges.data.remote.dto
 
-import com.unken.codewars.challenges.domain.model.Challenge
+import com.unken.codewars.challenges.domain.model.ChallengeSummary
 
-data class ChallengeDto(
+data class ChallengeSummaryDto(
     val completedAt: String,
     val completedLanguages: List<String>,
     val id: String,
     val name: String,
     val slug: String
 ) {
-    fun toChallenge(): Challenge {
-        return Challenge(
+    fun toChallenge(): ChallengeSummary {
+        return ChallengeSummary(
             completedAt = completedAt,
             completedLanguages = completedLanguages,
             id = id,

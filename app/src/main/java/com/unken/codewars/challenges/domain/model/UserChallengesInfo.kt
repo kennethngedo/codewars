@@ -1,7 +1,7 @@
 package com.unken.codewars.challenges.domain.model
 
-data class ChallengesInfo(
+data class UserChallengesInfo(
     val totalPages: Int,
     val totalItems: Int,
-    val data: List<Challenge>
+    val data: List<ChallengeSummary>
 )
