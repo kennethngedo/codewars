@@ -1,4 +1,4 @@
-package com.unken.codewars.ui.theme
+package com.unken.codewars.common.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

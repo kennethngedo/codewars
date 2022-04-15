@@ -1,9 +1,7 @@
 package com.unken.codewars.challenges.domain.model
 
 
-data class CodeChallenge (
-    val approvedAt: String,
-    val approvedBy: ApprovedBy,
+data class ChallengeDetails (
     val id: String,
     val languages: List<String>,
     val name: String,
@@ -14,5 +12,6 @@ data class CodeChallenge (
     val totalCompleted: Int,
     val totalStars: Int,
     val url: String,
-    val voteScore: Int
+    val voteScore: Int,
+    val description: String
 )
