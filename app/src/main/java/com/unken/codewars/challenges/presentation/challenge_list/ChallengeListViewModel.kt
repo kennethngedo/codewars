@@ -19,17 +19,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChallengeListViewModel @Inject constructor(private val getCodeWarInfo: GetCodeWarInfo): ViewModel() {
+class ChallengeListViewModel @Inject constructor(
+    private val getCodeWarInfo: GetCodeWarInfo
+    ): ViewModel() {
     private val _page = mutableStateOf(0)
     val page: State<Int> = _page
 
-    private val _state = mutableStateOf(ChallengesInfoState())
+    private val _state = mutableStateOf(ChallengesListState())
     val state = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun fetchChallenges(page: Int) {
+
+
+    fun fetchChallenges(page: Int = 0) {
+        _page.value = page
         viewModelScope.launch(Dispatchers.IO) {
             getCodeWarInfo(page).onEach {  result ->
                 when(result) {
