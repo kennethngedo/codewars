@@ -25,14 +25,10 @@ data class ChallengeDto(
         id = id,
         languages = languages,
         name = name,
-        rank = rank.toRank(),
         slug = slug,
-        tags = tags,
         totalAttempts = totalAttempts,
         totalCompleted = totalCompleted,
         totalStars = totalStars,
-        url = url,
-        voteScore = voteScore,
         description = description
     )
 }

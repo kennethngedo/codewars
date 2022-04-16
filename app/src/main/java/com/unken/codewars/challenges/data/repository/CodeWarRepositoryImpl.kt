@@ -13,10 +13,10 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class CodeWarRepositoryImpl(private val api: CodeWarApi) : CodeWarRepository {
-    override fun getCompletedChallenges(page: Int): Flow<Resource<CompletedChallenges>> = flow {
+    override fun getCompletedChallenges(pageNumber: Int): Flow<Resource<CompletedChallenges>> = flow {
         emit(Resource.Loading())
         try {
-            val remoteResponse = api.getCompletedChallenges(page)
+            val remoteResponse = api.getCompletedChallenges(pageNumber)
             emit(Resource.Success(remoteResponse.toCompletedChallenges()))
         } catch (e: HttpException) {
             emit(Resource.Error(message = UIText.StringResource(R.string.something_went_wrong)))
@@ -25,10 +25,10 @@ class CodeWarRepositoryImpl(private val api: CodeWarApi) : CodeWarRepository {
         }
     }
 
-    override fun getChallengeById(slug: String): Flow<Resource<Challenge>> = flow {
+    override fun getChallengeById(id: String): Flow<Resource<Challenge>> = flow {
         emit((Resource.Loading()))
         try {
-            val remoteResponse = api.getChallengeById(slug)
+            val remoteResponse = api.getChallengeById(id)
             emit(Resource.Success(remoteResponse.toChallenge()))
         } catch (e: HttpException) {
             emit(Resource.Error(message = UIText.StringResource(R.string.something_went_wrong)))

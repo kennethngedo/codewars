@@ -117,14 +117,10 @@ class FakeCodeWarRepositoryCaseImpl : CodeWarRepository {
                 id = "page_one_item_1",
                 slug = "page_one_item_1_slug",
                 languages = listOf("pascal", "vbase"),
-                tags = emptyList(),
-                url = "",
-                voteScore = 1,
                 description = "This is a sample problem to test your problem solving skills",
                 totalStars = 2,
                 totalCompleted = 200,
                 totalAttempts = 400,
-                rank = Rank(color = "red", id= 1, name = "Gold")
             )
             emit(Resource.Success(challengeDetails))
         }
