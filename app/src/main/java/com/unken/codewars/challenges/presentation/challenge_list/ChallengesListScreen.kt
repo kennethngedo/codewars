@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,10 +35,16 @@ fun ChallengesListScreen(
     val state = viewModel.state.value
     val challengeInfo = state.completedChallenges
     val challenges = challengeInfo?.data
-    val page = viewModel.page
+    val page = viewModel.page.value
+    val lastPage = challengeInfo?.totalPages ?: 1
+    val isFirstPage = page == 1
+    val isLastPage = page == lastPage
+
 
     LaunchedEffect(key1 = true) {
-        viewModel.startPage()
+        if(challenges == null && !state.isLoading) {
+            viewModel.startPage()
+        }
         viewModel.eventFlow.collectLatest { event ->
             when(event) {
                 is UIEvent.ShowSnackbar -> {
@@ -57,7 +64,7 @@ fun ChallengesListScreen(
 
             TextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = page.value.toString(),
+                value = page.toString(),
                 onValueChange = {
                     viewModel.gotoPage(it.toInt())
                 },
@@ -67,18 +74,17 @@ fun ChallengesListScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Button(onClick = { viewModel.startPage() }) {
+                Button(enabled = !isFirstPage, onClick = { viewModel.startPage() }) {
                     Text(text = stringResource(id = R.string.start, 1))
                 }
-                Button(onClick = { viewModel.previousPage() }) {
+                Button(enabled = !isFirstPage, onClick = { viewModel.previousPage() }) {
                     Text(text = stringResource(id = R.string.previous))
                 }
 
-                Button(onClick = { viewModel.nextPage() }) {
+                Button(enabled = !isLastPage, onClick = { viewModel.nextPage() }) {
                     Text(text = stringResource(id = R.string.next))
                 }
-                Button(onClick = { viewModel.endPage() }) {
-                    val lastPage = challengeInfo?.totalPages ?: 1
+                Button(enabled = !isLastPage, onClick = { viewModel.endPage() }) {
                     Text(text = stringResource(
                         id = R.string.end, lastPage)
                     )
