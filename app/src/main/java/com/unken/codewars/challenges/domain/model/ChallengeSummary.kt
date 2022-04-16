@@ -6,6 +6,6 @@ data class ChallengeSummary (
     val completedAt: String,
     val completedLanguages: List<String>,
     val id: String,
-    val name: String,
-    val slug: String
+    val name: String? = "Not Available",
+    val slug: String? = "Not Available"
 ): Serializable

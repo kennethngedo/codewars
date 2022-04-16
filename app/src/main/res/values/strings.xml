@@ -9,4 +9,8 @@
     <string name="total_completed">Total Completed</string>
     <string name="total_stars">Total Stars</string>
     <string name="languages">Languages</string>
+    <string name="start">Start (%s)</string>
+    <string name="previous">"Prev "</string>
+    <string name="end">End (%s)</string>
+    <string name="next">Next</string>
 </resources>
