@@ -1,7 +1,7 @@
 package com.unken.codewars.challenges.domain.model
 
 
-data class ChallengeDetails (
+data class Challenge (
     val id: String,
     val languages: List<String>,
     val name: String,

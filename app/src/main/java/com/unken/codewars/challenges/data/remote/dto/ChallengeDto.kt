@@ -1,8 +1,8 @@
 package com.unken.codewars.challenges.data.remote.dto
 
-import com.unken.codewars.challenges.domain.model.ChallengeDetails
+import com.unken.codewars.challenges.domain.model.Challenge
 
-data class ChallengeDetailsDto(
+data class ChallengeDto(
     val approvedAt: String,
     val approvedBy: ApprovedByDto,
     val category: String,
@@ -21,7 +21,7 @@ data class ChallengeDetailsDto(
     val url: String,
     val voteScore: Int
 ) {
-    fun toChallengeDetails() = ChallengeDetails (
+    fun toChallenge() = Challenge (
         id = id,
         languages = languages,
         name = name,

@@ -1,6 +1,5 @@
 package com.unken.codewars.challenges.presentation.challenge_details
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,9 +27,9 @@ class ChallengeDetailsViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    fun getChallengeBySlug(slug: String) {
+    fun getChallengeById(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            getChallengeDetails(slug).onEach { result ->
+            getChallengeDetails(id).onEach { result ->
                 when(result) {
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
@@ -40,13 +39,13 @@ class ChallengeDetailsViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            challengeDetails = result.data
+                            challenge = result.data
                         )
                     }
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            challengeDetails = result.data
+                            challenge = result.data
                         )
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(

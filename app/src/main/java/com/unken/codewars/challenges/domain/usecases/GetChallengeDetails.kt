@@ -5,5 +5,5 @@ import com.unken.codewars.challenges.domain.repository.CodeWarRepository
 class GetChallengeDetails(
     private val repository: CodeWarRepository
 ) {
-    operator fun invoke(slug: String) = repository.getChallengeDetails(slug)
+    operator fun invoke(id: String) = repository.getChallengeById(id)
 }

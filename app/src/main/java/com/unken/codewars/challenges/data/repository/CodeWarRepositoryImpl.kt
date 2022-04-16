@@ -2,8 +2,8 @@ package com.unken.codewars.challenges.data.repository
 
 import com.unken.codewars.R
 import com.unken.codewars.challenges.data.remote.CodeWarApi
-import com.unken.codewars.challenges.domain.model.ChallengeDetails
-import com.unken.codewars.challenges.domain.model.UserChallengesInfo
+import com.unken.codewars.challenges.domain.model.Challenge
+import com.unken.codewars.challenges.domain.model.CompletedChallenges
 import com.unken.codewars.challenges.domain.repository.CodeWarRepository
 import com.unken.codewars.common.utils.Resource
 import com.unken.codewars.common.utils.UIText
@@ -13,11 +13,11 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class CodeWarRepositoryImpl(private val api: CodeWarApi) : CodeWarRepository {
-    override fun getCodeWarInfo(page: Int): Flow<Resource<UserChallengesInfo>> = flow {
+    override fun getCompletedChallenges(page: Int): Flow<Resource<CompletedChallenges>> = flow {
         emit(Resource.Loading())
         try {
-            val remoteResponse = api.getUserInfo(page)
-            emit(Resource.Success(remoteResponse.toChallengesInfo()))
+            val remoteResponse = api.getCompletedChallenges(page)
+            emit(Resource.Success(remoteResponse.toCompletedChallenges()))
         } catch (e: HttpException) {
             emit(Resource.Error(message = UIText.StringResource(R.string.something_went_wrong)))
         } catch (e: IOException) {
@@ -25,11 +25,11 @@ class CodeWarRepositoryImpl(private val api: CodeWarApi) : CodeWarRepository {
         }
     }
 
-    override fun getChallengeDetails(slug: String): Flow<Resource<ChallengeDetails>> = flow {
+    override fun getChallengeById(slug: String): Flow<Resource<Challenge>> = flow {
         emit((Resource.Loading()))
         try {
-            val remoteResponse = api.getChallengeDetails(slug)
-            emit(Resource.Success(remoteResponse.toChallengeDetails()))
+            val remoteResponse = api.getChallengeById(slug)
+            emit(Resource.Success(remoteResponse.toChallenge()))
         } catch (e: HttpException) {
             emit(Resource.Error(message = UIText.StringResource(R.string.something_went_wrong)))
         } catch (e: IOException) {

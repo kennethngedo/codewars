@@ -3,12 +3,10 @@ package com.unken.codewars.challenges.presentation.challenge_details
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.rounded.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -43,7 +41,7 @@ fun ChallengeDetailScreen(
     val state = viewModel.state.value
 
     LaunchedEffect(key1 = true) {
-        viewModel.getChallengeBySlug(challengeSummary.slug)
+        viewModel.getChallengeById(challengeSummary.id)
         viewModel.eventFlow.collectLatest { event ->
             when(event) {
                 is UIEvent.ShowSnackbar -> {
@@ -59,7 +57,7 @@ fun ChallengeDetailScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = challengeSummary.name)
+                    Text(text = challengeSummary.name!!)
                 },
                 navigationIcon = {
                     Icon(
@@ -83,7 +81,7 @@ fun ChallengeDetailScreen(
                     .padding(horizontal = 20.dp)
                     .verticalScroll(state = scrollState, enabled = true)
             ) {
-                state.challengeDetails?.let { details ->
+                state.challenge?.let { details ->
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
                         Text(text = stringResource(id = R.string.total_attempts).uppercase(), style = TextStyle(fontSize = 16.sp, color = Color.Gray))

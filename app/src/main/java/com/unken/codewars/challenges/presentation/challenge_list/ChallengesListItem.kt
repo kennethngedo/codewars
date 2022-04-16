@@ -18,7 +18,7 @@ import com.unken.codewars.common.theme.Shapes
 @Composable
 fun ChallengesListItem(challenge: ChallengeSummary, onClick: (id: ChallengeSummary) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().clickable { onClick(challenge) }) {
-        Text(text = challenge.name, style = TextStyle(fontSize = 20.sp))
+        Text(text = challenge.name ?: challenge.id, style = TextStyle(fontSize = 20.sp))
         Spacer(modifier = Modifier.height(5.dp))
         LazyRow(modifier = Modifier.fillMaxWidth()) {
             items(challenge.completedLanguages.size) { i ->

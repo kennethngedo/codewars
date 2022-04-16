@@ -1,8 +1,8 @@
 package com.unken.codewars.challenges.presentation.challenge_details
 
-import com.unken.codewars.challenges.domain.model.ChallengeDetails
+import com.unken.codewars.challenges.domain.model.Challenge
 
 data class ChallengeDetailsState (
-    val challengeDetails: ChallengeDetails? = null,
+    val challenge: Challenge? = null,
     val isLoading: Boolean = false
 )
