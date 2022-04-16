@@ -23,7 +23,7 @@ fun ChallengesListItem(challenge: ChallengeSummary, onClick: (id: ChallengeSumma
         LazyRow(modifier = Modifier.fillMaxWidth()) {
             items(challenge.completedLanguages.size) { i ->
                 val language = challenge.completedLanguages[i]
-                if (i != 0) Spacer(modifier = Modifier.height(20.dp))
+                if (i > 0) Spacer(modifier = Modifier.width(20.dp))
                 Text(
                     text = language,
                     modifier = Modifier.background(color = Color.Gray, shape = Shapes.medium)
