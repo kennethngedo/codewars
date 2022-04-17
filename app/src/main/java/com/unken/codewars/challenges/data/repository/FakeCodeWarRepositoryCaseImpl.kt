@@ -2,7 +2,6 @@ package com.unken.codewars.challenges.data.repository
 
 import com.unken.codewars.challenges.data.remote.dto.ChallengeSummaryDto
 import com.unken.codewars.challenges.domain.model.Challenge
-import com.unken.codewars.challenges.domain.model.Rank
 import com.unken.codewars.challenges.domain.model.CompletedChallenges
 import com.unken.codewars.challenges.domain.repository.CodeWarRepository
 import com.unken.codewars.common.utils.Resource
@@ -95,13 +94,14 @@ class FakeCodeWarRepositoryCaseImpl : CodeWarRepository {
                 CompletedChallenges(
                     totalItems = challengesPageOne.size + challengesPageTwo.size + challengesPageThree.size,
                     totalPages = 3,
-                    data = page.map { it.toChallenge() }
+                    data = page.map { it.toChallengeSummary() }
                 )
             )
         )
     }
 
     override fun getChallengeById(id: String): Flow<Resource<Challenge>> = flow {
+        // Search for item in database, using the provided id
         val item = arrayListOf<ChallengeSummaryDto>().apply {
             addAll(challengesPageOne)
             addAll(challengesPageTwo)

@@ -11,7 +11,7 @@ data class CompletedChallengesDto(
         return CompletedChallenges(
             totalPages = totalPages,
             totalItems = totalItems,
-            data = data.map { it.toChallenge() }
+            data = data.map { it.toChallengeSummary() }
         )
     }
 }

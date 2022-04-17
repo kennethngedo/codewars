@@ -9,7 +9,7 @@ data class ChallengeSummaryDto(
     val name: String,
     val slug: String
 ) {
-    fun toChallenge(): ChallengeSummary {
+    fun toChallengeSummary(): ChallengeSummary {
         return ChallengeSummary(
             completedAt = completedAt,
             completedLanguages = completedLanguages,
