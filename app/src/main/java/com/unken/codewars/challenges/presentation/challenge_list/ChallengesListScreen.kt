@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.unken.codewars.R
 import com.unken.codewars.challenges.presentation.destinations.ChallengeDetailScreenDestination
+import com.unken.codewars.common.utils.Constants
+import com.unken.codewars.common.utils.Constants.ChallengesListTag
+import com.unken.codewars.common.utils.Constants.EndButtonTag
+import com.unken.codewars.common.utils.Constants.NextButtonTag
+import com.unken.codewars.common.utils.Constants.PageTextFieldTag
+import com.unken.codewars.common.utils.Constants.PreviousButtonTag
+import com.unken.codewars.common.utils.Constants.StartButtonTag
 import com.unken.codewars.common.utils.UIEvent
 import kotlinx.coroutines.flow.collectLatest
 
@@ -75,7 +83,7 @@ fun ChallengesListScreen(
         ) {
 
             TextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag(PageTextFieldTag),
                 value = page,
                 onValueChange = {
                     viewModel.gotoPage(it)
@@ -91,24 +99,28 @@ fun ChallengesListScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
+                    modifier = Modifier.testTag(StartButtonTag),
                     enabled = !isFirstPage,
                     onClick = { viewModel.startPage() }
                 ) {
                     Text(text = stringResource(id = R.string.start, 1))
                 }
                 Button(
+                    modifier = Modifier.testTag(PreviousButtonTag),
                     enabled = !isFirstPage && currentPageIsValid,
                     onClick = { viewModel.previousPage() }
                 ) {
                     Text(text = stringResource(id = R.string.previous))
                 }
                 Button(
+                    modifier = Modifier.testTag(NextButtonTag),
                     enabled = !isLastPage && currentPageIsValid,
                     onClick = { viewModel.nextPage() }
                 ) {
                     Text(text = stringResource(id = R.string.next))
                 }
                 Button(
+                    modifier = Modifier.testTag(EndButtonTag),
                     enabled = !isLastPage,
                     onClick = { viewModel.endPage() }
                 ) {
@@ -130,7 +142,11 @@ fun ChallengesListScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     challenges?.let {
-                        LazyColumn(state = listSate, modifier = Modifier.fillMaxSize()) {
+                        LazyColumn(
+                            state = listSate,
+                            modifier = Modifier.fillMaxSize()
+                                .testTag(ChallengesListTag)
+                        ) {
                             items(challenges.size) { i ->
                                 val challenge = challenges[i]
                                 if (i > 0) {

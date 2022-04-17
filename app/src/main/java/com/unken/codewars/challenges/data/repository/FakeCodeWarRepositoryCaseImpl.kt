@@ -12,87 +12,87 @@ import java.util.*
 
 class FakeCodeWarRepositoryCaseImpl : CodeWarRepository {
 
-    private val challengesPageOne = listOf(
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Living in bondage",
-            id = "page_one_item_1",
-            slug = "page_one_item_1_slug",
-            completedLanguages = listOf("pascal", "vbase")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "New year's eve",
-            id = "page_one_item_2",
-            slug = "page_one_item_2_slug",
-            completedLanguages = listOf("java", "python")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Palindrome",
-            id = "page_one_item_3",
-            slug = "page_one_item_3_slug",
-            completedLanguages = listOf("c++")
+    companion object {
+        val challenges = listOf(
+            listOf(
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Living in bondage",
+                    id = "page_one_item_1",
+                    slug = "page_one_item_1_slug",
+                    completedLanguages = listOf("pascal", "vbase")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "New year's eve",
+                    id = "page_one_item_2",
+                    slug = "page_one_item_2_slug",
+                    completedLanguages = listOf("java", "python")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Palindrome",
+                    id = "page_one_item_3",
+                    slug = "page_one_item_3_slug",
+                    completedLanguages = listOf("c++")
+                )
+            ),
+            listOf(
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Graph depth",
+                    id = "page_two_item_1",
+                    slug = "page_two_item_1_slug",
+                    completedLanguages = listOf("pascal", "vbase")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Living in bondage",
+                    id = "page_two_item_2",
+                    slug = "page_two_item_2_slug",
+                    completedLanguages = listOf("java", "fortran")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Joker Mania",
+                    id = "page_two_item_3",
+                    slug = "page_two_item_3_slug",
+                    completedLanguages = listOf("java", "fortran")
+                )
+            ),
+            listOf(
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Pontus Arielus",
+                    id = "page_three_item_1",
+                    slug = "page_three_item_1_slug",
+                    completedLanguages = listOf("pascal", "vbase")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Marc Anthony's Quiz",
+                    id = "page_three_item_2",
+                    slug = "page_three_item_2_slug",
+                    completedLanguages = listOf("java", "fortran")
+                ),
+                ChallengeSummaryDto(
+                    completedAt = Calendar.getInstance().time.toString(),
+                    name = "Lara Croft's Tombstone",
+                    id = "page_three_item_3",
+                    slug = "page_three_item_3_slug",
+                    completedLanguages = listOf("java", "fortran")
+                )
+            )
         )
-    )
-    private val challengesPageTwo = listOf(
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Graph depth",
-            id = "page_two_item_1",
-            slug = "page_two_item_1_slug",
-            completedLanguages = listOf("pascal", "vbase")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Living in bondage",
-            id = "page_two_item_2",
-            slug = "page_two_item_2_slug",
-            completedLanguages = listOf("java", "fortran")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Joker Mania",
-            id = "page_two_item_3",
-            slug = "page_two_item_3_slug",
-            completedLanguages = listOf("java", "fortran")
-        )
-    )
-    private val challengesPageThree = listOf<ChallengeSummaryDto>(
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Pontus Arielus",
-            id = "page_three_item_1",
-            slug = "page_three_item_1_slug",
-            completedLanguages = listOf("pascal", "vbase")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Marc Anthony's Quiz",
-            id = "page_three_item_2",
-            slug = "page_three_item_2_slug",
-            completedLanguages = listOf("java", "fortran")
-        ),
-        ChallengeSummaryDto(
-            completedAt = Calendar.getInstance().time.toString(),
-            name = "Lara Croft's Tombstone",
-            id = "page_three_item_3",
-            slug = "page_three_item_3_slug",
-            completedLanguages = listOf("java", "fortran")
-        )
-    )
+    }
 
     override fun getCompletedChallenges(pageNumber: Int): Flow<Resource<CompletedChallenges>> = flow {
-        val page = when(pageNumber) {
-            0 -> challengesPageOne
-            1 -> challengesPageTwo
-            2 -> challengesPageThree
-            else -> arrayListOf()
-        }
+        val page = challenges[pageNumber]
+
         emit(
             Resource.Success(
                 CompletedChallenges(
-                    totalItems = challengesPageOne.size + challengesPageTwo.size + challengesPageThree.size,
+                    totalItems = 9,
                     totalPages = 3,
                     data = page.map { it.toChallengeSummary() }
                 )
@@ -103,9 +103,7 @@ class FakeCodeWarRepositoryCaseImpl : CodeWarRepository {
     override fun getChallengeById(id: String): Flow<Resource<Challenge>> = flow {
         // Search for item in database, using the provided id
         val item = arrayListOf<ChallengeSummaryDto>().apply {
-            addAll(challengesPageOne)
-            addAll(challengesPageTwo)
-            addAll(challengesPageThree)
+            challenges.map { addAll(it) }
         }.find { it.id == id }
 
         if (item == null) {
