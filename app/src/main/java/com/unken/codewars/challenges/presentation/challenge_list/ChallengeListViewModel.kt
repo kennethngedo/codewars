@@ -22,8 +22,8 @@ class ChallengeListViewModel @Inject constructor(
     private val getCodeWarInfo: GetCodeWarInfo
     ): ViewModel() {
 
-    private val _page = mutableStateOf(1)
-    val page: State<Int> = _page
+    private val _page = mutableStateOf("1")
+    val page: State<String> = _page
 
     private val _state = mutableStateOf(ChallengesListState())
     val state = _state
@@ -33,11 +33,14 @@ class ChallengeListViewModel @Inject constructor(
 
     private var fetchChallengesJob: Job? = null
 
-    private fun fetchChallenges(pageNumber: Int = 1)  {
-        _page.value = pageNumber
+    private fun fetchChallenges(pageNumber: Int)  {
+        _page.value = pageNumber.toString()
         fetchChallengesJob?.cancel()
         fetchChallengesJob = viewModelScope.launch(Dispatchers.IO) {
+            // Add a small delay, just in case the user is still typing
+            // A new entry will call this method again, Hence the old job will be canceled
             delay(500L)
+
             getCodeWarInfo(pageNumber - 1).onEach {  result ->
                 when(result) {
                     is Resource.Loading -> {
@@ -76,25 +79,42 @@ class ChallengeListViewModel @Inject constructor(
         fetchChallenges(destinationPage)
     }
 
+    private fun pageIsValid(pageNumber: String): Boolean {
+        _page.value = pageNumber
+        return try {
+            val pageInt = pageNumber.toInt()
+            val lastPage = _state.value.completedChallenges?.totalPages ?: 1
+            pageInt in 1..lastPage
+        } catch (e: NumberFormatException) {
+            false
+        }
+    }
+
     fun nextPage() {
+        if (!pageIsValid(_page.value)) return
+
         val lastPage = _state.value.completedChallenges?.totalPages ?: 1
-        if (_page.value < lastPage) {
-            val destinationPage = _page.value + 1
+        val currentPage = _page.value.toInt()
+        if (currentPage < lastPage) {
+            val destinationPage = currentPage + 1
             fetchChallenges(destinationPage)
         }
     }
 
     fun previousPage() {
-        if(_page.value > 1) {
-            val destinationPage = _page.value - 1
+        if (!pageIsValid(_page.value)) return
+
+        val currentPage = _page.value.toInt()
+        if(currentPage > 1) {
+            val destinationPage = currentPage - 1
             fetchChallenges(destinationPage)
         }
     }
 
-    fun gotoPage(pageNumber: Int) {
-        val lastPage = _state.value.completedChallenges?.totalPages ?: 1
-        if (pageNumber in 1..lastPage) {
-            fetchChallenges(pageNumber)
-        }
+    fun gotoPage(pageNumber: String) {
+        if (!pageIsValid(pageNumber)) return
+
+        val pageInt = pageNumber.toInt()
+        fetchChallenges(pageInt)
     }
 }

@@ -25,27 +25,27 @@ class ChallengeListViewModelTest {
 
     @Test
     fun `startPage() requests first page of challenges list`()  {
-        assertEquals(viewModel.page.value, 1)
+        assertEquals(viewModel.page.value, "1")
     }
 
     @Test
     fun `endPage() requests last page of current user's completed challenges`() = runBlocking {
         val lastPage = viewModel.state.value.completedChallenges!!.totalPages
-        viewModel.gotoPage(lastPage)
+        viewModel.gotoPage(lastPage.toString())
 
         delay(1000L)
 
-        assertEquals(viewModel.page.value, lastPage)
+        assertEquals(viewModel.page.value, lastPage.toString())
     }
 
     @Test
     fun `nextPage() requests the page after the current page`() = runBlocking {
-        val previousPage = viewModel.page.value
+        val currentPage = viewModel.page.value.toInt()
         viewModel.nextPage()
 
         delay(1000L)
 
-        assertEquals(viewModel.page.value, previousPage + 1)
+        assertEquals(viewModel.page.value, (currentPage + 1).toString())
 
     }
 
@@ -59,6 +59,7 @@ class ChallengeListViewModelTest {
 
         delay(1000L)
 
+        // The last page should still be the current page
         assertEquals(viewModel.page.value, lastPage)
 
     }
@@ -67,7 +68,7 @@ class ChallengeListViewModelTest {
     fun `previousPage() requests the page before the current page`() = runBlocking {
         // Set current page to the last page, so that we can request a previous page
         val lastPage = viewModel.state.value.completedChallenges!!.totalPages
-        viewModel.gotoPage(lastPage)
+        viewModel.gotoPage(lastPage.toString())
 
         delay(1000L)
 
@@ -77,7 +78,7 @@ class ChallengeListViewModelTest {
         delay(1000L)
 
         // Check that current page number is updated accordingly
-        assertEquals(lastPage - 1, viewModel.page.value)
+        assertEquals((lastPage - 1).toString(), viewModel.page.value)
     }
 
     @Test
@@ -89,44 +90,32 @@ class ChallengeListViewModelTest {
         delay(1000L)
 
         // Check that current page number is updated accordingly
-        assertEquals(1, viewModel.page.value)
+        assertEquals("1", viewModel.page.value)
     }
 
     @Test
     fun `gotoPage(String) will request a page, if the page number is within range`() = runBlocking {
-        viewModel.startPage()
-
-        // Check that the current page is 1
-        assertEquals( 1, viewModel.page.value)
-
-        // Wait to retrieve challenge information -> totalPages
-        delay(1000L)
-
         // Attempt to request with a valid page number
-        val validPageNumber = viewModel.state.value.completedChallenges!!.totalPages - 1
-        viewModel.gotoPage(validPageNumber)
+        val validPageNumber = (viewModel.state.value.completedChallenges!!.totalPages - 1)
+        viewModel.gotoPage(validPageNumber.toString())
 
+        delay(1500L)
 
         // Check that current page number is updated, Hence the request was  made
-        assertEquals( validPageNumber, viewModel.page.value)
+        assertEquals(validPageNumber.toString(), viewModel.page.value)
     }
 
     @Test
     fun `gotoPage(String) will NOT request a page, if the page number is out of range`() = runBlocking {
-        viewModel.startPage()
-
-        // Check that the current page is 1
-        assertEquals(viewModel.page.value, 1)
-
-        // Wait to retrieve challenge information -> totalPages
-        delay(1000L)
-
         // Attempt to request with an out of range page number
         val invalidPageNumber = viewModel.state.value.completedChallenges!!.totalPages + 1
-        viewModel.gotoPage(invalidPageNumber)
+        viewModel.gotoPage(invalidPageNumber.toString())
+
+        // After 500 milliseconds, check that a request is not being made
+        delay(501L)
 
         // Check that page number did not change, Hence the request was not made
-        assertEquals(viewModel.page.value, 1)
+        assertEquals(false, viewModel.state.value.isLoading)
 
     }
 }
