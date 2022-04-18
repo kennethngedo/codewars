@@ -65,7 +65,7 @@ class ChallengesListScreenTest {
         // Retrieve an item that is expected to be in the list
         val expectedItem = FakeCodeWarRepositoryCaseImpl.challenges[0].first()
 
-        // Assert the list is displayed
+        // Click on the first item in the current list
         composeTestRule.onNodeWithText(expectedItem.name).performClick()
 
         delay(100L)

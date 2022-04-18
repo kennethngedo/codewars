@@ -1,4 +1,4 @@
-package com.unken.codewars.common.di
+package com.unken.codewars.challenges.di
 
 import com.unken.codewars.challenges.data.remote.CodeWarApi
 import com.unken.codewars.challenges.data.repository.CodeWarRepositoryImpl
